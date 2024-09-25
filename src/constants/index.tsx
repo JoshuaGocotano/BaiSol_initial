@@ -10,11 +10,12 @@ import roboam from "../assets/profile-pictures/roboam.jpg";
 import joshua from "../assets/profile-pictures/joshua.jpg";
 
 export const navItems = [
-  { label: "Features", href: "#" },
-  { label: "Workflow", href: "#" },
-  { label: "Pricing", href: "#" },
-  { label: "Developers", href: "#" },
-];
+  { label: "Home", section: "heroRef" },
+  { label: "Features", section: "featureRef" },
+  { label: "Workflow", section: "workflowRef" },
+  { label: "Pricing", section: "pricingRef" },
+  { label: "Developers", section: "developersRef" },
+] as const;
 
 export const developers = [
   {

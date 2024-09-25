@@ -8,8 +8,11 @@ export const Developers = () => {
       </h2>
       <div className="flex flex-wrap justify-center">
         {developers.map((dev, index) => (
-          <div key={index} className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-10">
-            <div className="bg-neutral rounded-xl p-6 border border-neutral-800 font-thin">
+          <div
+            key={index}
+            className="w-full sm:w-1/2 lg:w-1/3 px-4 mb-10 transition-transform transform hover:scale-105 hover:border-white"
+          >
+            <div className="bg-neutral rounded-xl p-6 border border-neutral-800 font-thin hover:border-2 hover:border-white transition-all duration-300">
               <div className="text-center">
                 <img
                   src={dev.image}

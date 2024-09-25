@@ -3,11 +3,29 @@ import { useState } from "react";
 import logo from "../assets/logo.png";
 import { navItems } from "../constants";
 
-export const NavBar = () => {
+interface NavBarProps {
+  scrollToSection: (ref: React.RefObject<HTMLDivElement>) => void;
+  sections: {
+    heroRef: React.RefObject<HTMLDivElement>;
+    featureRef: React.RefObject<HTMLDivElement>;
+    workflowRef: React.RefObject<HTMLDivElement>;
+    pricingRef: React.RefObject<HTMLDivElement>;
+    developersRef: React.RefObject<HTMLDivElement>;
+  };
+}
+
+export const NavBar: React.FC<NavBarProps> = ({
+  scrollToSection,
+  sections,
+}) => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
+  };
+
+  const handleScroll = (section: keyof typeof sections) => {
+    scrollToSection(sections[section]);
   };
 
   return (
@@ -16,22 +34,29 @@ export const NavBar = () => {
         <div className="flex justify-between items-center ml-3 mr-4">
           <div className="flex items-center flex-shrink-0">
             <img className="h-10 w-10 mr-2" src={logo} alt="logo" />
-            <span className="text-xl tracking-tight">B a i S o l</span>
+            <span className="text-2xl font-bold tracking-wide">
+              Bai
+              <span className="bg-gradient-to-r from-orange-500 to-orange-600 text-transparent bg-clip-text">
+                SoL
+              </span>
+            </span>
           </div>
 
+          {/* Desktop Menu */}
           <ul className="hidden lg:flex ml-14 space-x-12">
             {navItems.map((item, index) => (
               <li key={index}>
-                <a
-                  href={item.href}
-                  className="hover:text-orange-400 hover:underline underline-offset-4 transition-all duration-300"
+                <button
+                  onClick={() => handleScroll(item.section)}
+                  className="hover:text-orange-400 hover:underline underline-offset-4 transition-all duration-200"
                 >
                   {item.label}
-                </a>
+                </button>
               </li>
             ))}
           </ul>
 
+          {/* Login and Account Links */}
           <div className="hidden lg:flex justify-center space-x-5 items-center">
             <a
               href="#"
@@ -47,6 +72,7 @@ export const NavBar = () => {
             </a>
           </div>
 
+          {/* Mobile Menu */}
           <div className="lg:hidden md:flex flex-col justify-end">
             <button onClick={toggleNavbar}>
               {mobileDrawerOpen ? <X /> : <Menu />}
@@ -54,17 +80,18 @@ export const NavBar = () => {
           </div>
         </div>
 
+        {/* Mobile Drawer */}
         {mobileDrawerOpen && (
           <div className="fixed right-0 z-20 bg-neutral-900 w-full p-12 flex flex-col justify-center items-center lg:hidden">
             <ul>
               {navItems.map((item, index) => (
                 <li key={index} className="py-4">
-                  <a
-                    href={item.href}
+                  <button
+                    onClick={() => handleScroll(item.section)}
                     className="hover:text-orange-400 hover:underline underline-offset-4 transition-all duration-300"
                   >
                     {item.label}
-                  </a>
+                  </button>
                 </li>
               ))}
             </ul>
