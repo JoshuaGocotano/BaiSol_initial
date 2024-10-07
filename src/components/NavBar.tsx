@@ -12,11 +12,17 @@ interface NavBarProps {
     pricingRef: React.RefObject<HTMLDivElement>;
     developersRef: React.RefObject<HTMLDivElement>;
   };
+  onLoginClick: () => void;
+  isLoggedIn: boolean;
+  onLogout: () => void;
 }
 
 export const NavBar: React.FC<NavBarProps> = ({
   scrollToSection,
   sections,
+  onLoginClick,
+  isLoggedIn,
+  onLogout,
 }) => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
 
@@ -56,20 +62,32 @@ export const NavBar: React.FC<NavBarProps> = ({
             ))}
           </ul>
 
-          {/* Login and Account Links */}
+          {/* Login/Logout Buttons */}
           <div className="hidden lg:flex justify-center space-x-5 items-center">
-            <a
-              href="#"
-              className="py-2 px-10 border rounded-md hover:bg-neutral-700 transition-colors duration-300"
-            >
-              Login
-            </a>
-            <a
-              href="#"
-              className="bg-gradient-to-r from-orange-500 to-orange-800 py-2 px-3 rounded-md hover:opacity-80 transition-opacity duration-300"
-            >
-              Create Account
-            </a>
+            {isLoggedIn ? (
+              // Show logout button when user is logged in
+              <button
+                onClick={onLogout} // Call the onLogout handler
+                className="py-2 px-10 border rounded-md hover:bg-neutral-700 transition-colors duration-300"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <button
+                  onClick={onLoginClick} // Trigger the login modal
+                  className="py-2 px-10 border rounded-md hover:bg-neutral-700 transition-colors duration-300"
+                >
+                  Login
+                </button>
+                <a
+                  href="#"
+                  className="bg-gradient-to-r from-orange-500 to-orange-800 py-2 px-3 rounded-md hover:opacity-80 transition-opacity duration-300"
+                >
+                  Create Account
+                </a>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -96,18 +114,30 @@ export const NavBar: React.FC<NavBarProps> = ({
               ))}
             </ul>
             <div className="flex flex-col space-y-5 mt-4">
-              <a
-                href="#"
-                className="py-2 px-10 border rounded-md hover:bg-neutral-700 transition-colors duration-300"
-              >
-                Login
-              </a>
-              <a
-                href="#"
-                className="bg-gradient-to-r from-orange-500 to-orange-800 py-2 px-3 rounded-md hover:opacity-80 transition-opacity duration-300"
-              >
-                Create Account
-              </a>
+              {isLoggedIn ? (
+                // Show logout button in mobile menu when user is logged in
+                <button
+                  onClick={onLogout} // Call the onLogout handler
+                  className="py-2 px-10 border rounded-md hover:bg-neutral-700 transition-colors duration-300"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <button
+                    onClick={onLoginClick} // Trigger the login modal
+                    className="py-2 px-10 border rounded-md hover:bg-neutral-700 transition-colors duration-300"
+                  >
+                    Login
+                  </button>
+                  <a
+                    href="#"
+                    className="bg-gradient-to-r from-orange-500 to-orange-800 py-2 px-3 rounded-md hover:opacity-80 transition-opacity duration-300"
+                  >
+                    Create Account
+                  </a>
+                </>
+              )}
             </div>
           </div>
         )}

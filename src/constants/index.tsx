@@ -105,33 +105,33 @@ export const checklistItems = [
 
 export const pricingOptions = [
   {
-    title: "Free",
-    price: "$0",
+    title: "Package A",
+    price: "₱50,000",
     features: [
-      "Private board sharing",
-      "5 Gb Storage",
-      "Web Analytics",
-      "Private Mode",
+      "For homes with 5kw usage",
+      "On-grid System",
+      "Solar can only be used in day",
+      "Can reduce your bill up to 50%",
     ],
   },
   {
-    title: "Pro",
-    price: "$10",
+    title: "Package B",
+    price: "₱150,000",
     features: [
-      "Private board sharing",
-      "10 Gb Storage",
-      "Web Analytics (Advance)",
-      "Private Mode",
+      "For structures with 5kw usage",
+      "Hybrid System",
+      "Solar can be used day or night",
+      "Can reduce your bill up to 40%",
     ],
   },
   {
-    title: "Enterprise",
-    price: "$200",
+    title: "Package C",
+    price: "₱300,000",
     features: [
-      "Private board sharing",
-      "Unlimited Storage",
-      "High Performance Network",
-      "Private Mode",
+      "For bigger structures or usage",
+      "with 15kw or more usage",
+      "Hybrid System",
+      "Can reduce your bill up to 30%",
     ],
   },
 ];

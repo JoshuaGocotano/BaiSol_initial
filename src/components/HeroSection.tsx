@@ -1,15 +1,30 @@
+import React from "react";
 import video3 from "../assets/video3.mp4";
 import video4 from "../assets/video4.mp4";
 
-export const HeroSection = () => {
+interface HeroSectionProps {
+  userEmail: string | null; // Accept userEmail as a prop
+}
+
+export const HeroSection: React.FC<HeroSectionProps> = ({ userEmail }) => {
   return (
     <div className="flex flex-col items-center mt-6 lg:mt-20">
       <h1 className="text-4xl sm:text-6xl lg:text-7xl text-center tracking-wide">
-        BaiSol enhances management for
-        <span className="bg-gradient-to-r from-orange-500 to-red-800 text-transparent bg-clip-text">
-          {" "}
-          SunVoltage Inc.
-        </span>
+        {userEmail ? (
+          <>
+            Welcome to BaiSol,{" "}
+            <span className="bg-gradient-to-r from-orange-500 to-red-800 text-transparent bg-clip-text">
+              {userEmail}{"!"}
+            </span>
+          </>
+        ) : (
+          <>
+            BaiSol enhances management for{" "}
+            <span className="bg-gradient-to-r from-orange-500 to-red-800 text-transparent bg-clip-text">
+              SunVoltage Inc.
+            </span>
+          </>
+        )}
       </h1>
 
       <p className="mt-10 text-lg text-center text-neutral-500 max-w-4xl">
@@ -23,9 +38,12 @@ export const HeroSection = () => {
           href="#"
           className="bg-gradient-to-r from-orange-500 to-orange-800 py-3 px-4 mx-3 rounded-md bg-gradient-to-r from-orange-500 to-orange-800 py-2 px-3 rounded-md hover:opacity-80 transition-opacity duration-300"
         >
-          Inquire for a Quote
+          Get a Free Quote
         </a>
-        <a href="#" className="py-3 px-4 mx-3 rounded-md border hover:bg-neutral-700 transition-colors duration-300">
+        <a
+          href="#"
+          className="py-3 px-4 mx-3 rounded-md border hover:bg-neutral-700 transition-colors duration-300"
+        >
           Documentation
         </a>
       </div>
