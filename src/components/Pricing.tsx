@@ -1,5 +1,12 @@
 import { CheckCircle2 } from "lucide-react";
 import { pricingOptions } from "../constants";
+import axios from "axios";
+import { loadStripe } from "@stripe/stripe-js";
+
+// Load the Stripe instance with publishable key
+const stripePromise = loadStripe(
+  "pk_test_51Q1VOJ2L5wWxWZHnUEalN1MxONFa5YLPJjnIMLyoN0zMS4lrWgnM4xUwtTvJehVnTtYR6OY3n4D9IGu7d2XYoCuI0099PjuInc"
+);
 
 interface PricingProps {
   isLoggedIn: boolean;
@@ -10,12 +17,39 @@ export const Pricing: React.FC<PricingProps> = ({
   isLoggedIn,
   onLoginClick,
 }) => {
-  const handleGetQuoteClick = () => {
+  const handleGetQuoteClick = async (option: (typeof pricingOptions)[0]) => {
     if (!isLoggedIn) {
       onLoginClick(); // Open login modal if user is not logged in
     } else {
-      // Handle the logic for logged-in users (e.g., navigate to a quote form)
-      console.log("Proceed to quote request page or action.");
+      try {
+        // Send a POST request to backend to create a Payment Intent
+        const response = await axios.post(
+          "https://localhost:7132/api/stripe/create-checkout-session",
+          {
+            Title: option.title,
+            Description: option.features.join(", "),
+            Amount: parseInt(option.price.replace(/₱|,/g, "").trim()) * 100,
+            Currency: "php",
+          }
+        );
+
+        // Get the session ID from the response
+        const sessionId = response.data.SessionId;
+
+        // Load Stripe.js
+        const stripe = await stripePromise;
+
+        // Redirect the user to the Stripe Checkout page
+        if (stripe) {
+          const { error } = await stripe.redirectToCheckout({ sessionId });
+
+          if (error) {
+            console.error("Stripe checkout error:", error.message);
+          }
+        }
+      } catch (error) {
+        console.error("Error creating Stripe checkout session:", error);
+      }
     }
   };
 
@@ -40,8 +74,12 @@ export const Pricing: React.FC<PricingProps> = ({
                 )}
               </p>
               <p className="mb-8">
-                <span className="text-5xl mt-6 mr-2">{option.price}</span>
-                <span className="text-neutral-400 tracking-tight">PHP</span>
+                <span className="text-5xl mt-6 mr-1">
+                  {option.price.toLocaleString()}
+                </span>
+                <span className="text-2xl text-neutral-400 tracking-tight">
+                  .00
+                </span>
               </p>
               <ul>
                 {option.features.map((feature, index) => (
@@ -52,7 +90,7 @@ export const Pricing: React.FC<PricingProps> = ({
                 ))}
               </ul>
               <button
-                onClick={handleGetQuoteClick}
+                onClick={() => handleGetQuoteClick(option)}
                 className="inline-flex justify-center items-center text-center w-full h-12 p-5 mt-20 tracking-tight text-xl hover:bg-orange-800 border border-orange-900 rounded-lg transition duration-200"
               >
                 Get Package
